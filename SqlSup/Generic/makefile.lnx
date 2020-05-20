@@ -1,0 +1,40 @@
+#/************************************************
+#* File: makefile.
+#* Desc: Building definitions for the SQL support in Plzen.
+PROJECT= SqlSup
+VERSION= 0.1
+
+include $(AKRAPROJ)/geneMake.lnx
+
+CFLAGS= -g -DDEBUG_1 -DLINUX -D_REENTRANT
+LDFLAGS= -shared
+
+#LDPATHS= -L$(PLZENLIB)
+#LIBS= -lPlzen
+
+#PLZNSRCS= dTerminal.cpp
+#	sqlDataPipe.cpp
+
+CPPSRCS= dataStat.cpp \
+	execFrame.cpp \
+	replyValue.cpp \
+	sqlClause.cpp \
+	sqlEngine.cpp \
+	sqlExpression.cpp \
+	sqlTerminal.cpp \
+	textEngine.cpp \
+	textOutputBuffer.cpp
+
+
+all: sqlsup.so.$(VERSION)
+
+sqlsup.so.$(VERSION): $(OBJS)
+	( cd $(OBJ_PATH) && \
+	  $(LD) $(LDFLAGS) $(LDPATHS) -o $@ $(OBJS) $(LIBS) \
+	)
+
+clean:
+	( cd $(OBJ_PATH) && \
+		rm $(OBJS) \
+	)
+

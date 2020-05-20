@@ -1,0 +1,34 @@
+#/************************************************
+#* File: makefile.
+#* Desc: Building definitions for the SQL support in Plzen.
+PROJECT= MySql
+VERSION= 0.1
+
+include $(AKRAPROJ)/geneMake.lnx
+
+CFLAGS= -g -DDEBUG_1 -DLINUX -D_REENTRANT
+LDFLAGS= -shared
+
+INC:= $(INC) -I../Generic/inc
+LIBS= -lPlzen -lmysqlclient
+LDPATHS= -L$(PLZENLIB) -L/usr/local/lib/mysql
+SRCS= \
+	mysqlEngine.cpp \
+	mysqlPipe.cpp \
+	mysqlReplyValue.cpp \
+	mysqlSupport.cpp \
+	mysqlTerminal.cpp
+
+all: mysqlsup.so.$(VERSION)
+
+
+mysqlsup.so.$(VERSION): $(OBJS)
+	( cd $(OBJ_PATH) && \
+	  $(LD) $(LDFLAGS) -o $@ $(OBJS) $(LDPATHS) $(LIBS) \
+	)
+	
+clean:
+	(cd $(OBJ_PATH) && \
+		rm $(OBJS) \
+	)
+
